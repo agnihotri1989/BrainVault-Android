@@ -73,4 +73,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
             syncRequest
         )
     }
+    fun clearAiAnswer() {
+        _aiAnswer.value = ""
+    }
 }

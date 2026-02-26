@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +33,11 @@ fun AskAIScreen(navController: NavController, viewModel: NoteViewModel) {
     var question by remember { mutableStateOf("") }
     val answer by viewModel.aiAnswer.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.clearAiAnswer()
+        }
+    }
     Scaffold(
         topBar = { TopAppBar(title = { Text("Ask AI 🤖") }) }
     ) { padding ->
