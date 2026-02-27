@@ -1,5 +1,6 @@
 package com.kshitiz.brainvault.network
 
+import com.kshitiz.brainvault.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -25,9 +26,7 @@ interface ApiService {
 }
 
 object RetrofitInstance {
-    //private const val BASE_URL = "http://10.0.2.2:8000/"  // use 10.0.2.2 for emulator
-    //private const val BASE_URL = "http://13.60.211.20:8000/" // AWS URL
-    private const val BASE_URL = "http://13.60.211.20:8000/"
+    private const val BASE_URL = BuildConfig.BASE_URL
     val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     private val okHttpClient = OkHttpClient.Builder()
