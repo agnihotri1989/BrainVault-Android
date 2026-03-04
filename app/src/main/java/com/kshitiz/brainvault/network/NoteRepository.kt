@@ -35,8 +35,11 @@ class NoteRepository(private val dao: NoteDao) {
     suspend fun askAI(question: String): String {
         return try {
             val response = RetrofitInstance.api.askQuestion(AskRequest(question))
-            if (response.isSuccessful) response.body()?.reply ?: "No answer found"
-            else "Server error: ${response.code()}"
+            when {
+                response.isSuccessful -> response.body()?.reply ?: "No answer found"
+                response.code() == 401 -> "Session expired — please login again"  // fallback msg
+                else -> "Server error: ${response.code()}"
+            }
         } catch (e: Exception) {
             "Offline — AI unavailable"
         }
