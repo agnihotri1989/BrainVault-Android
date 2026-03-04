@@ -8,6 +8,8 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.kshitiz.brainvault.auth.AuthRepository
+import com.kshitiz.brainvault.auth.TokenManager
 import com.kshitiz.brainvault.data.BrainVaultDatabase
 import com.kshitiz.brainvault.data.Note
 import com.kshitiz.brainvault.network.NoteRepository
@@ -22,6 +24,9 @@ import java.util.concurrent.TimeUnit
 class NoteViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: NoteRepository
+    private val tokenManager: TokenManager = TokenManager(application)        // 👈 init TokenManager
+    private val authRepository: AuthRepository = AuthRepository(tokenManager)
+
     val allNotes: StateFlow<List<Note>>
 
     // AI Answer state
@@ -43,6 +48,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun addNote(title: String, content: String) = viewModelScope.launch {
+        //authRepository.checkTokenValidity()
         val note = Note(title = title, content = content, timestamp = System.currentTimeMillis())
         repository.insertNote(note)
         repository.syncUnsyncedNotes() // attempt sync immediately
@@ -53,6 +59,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun askAI(question: String) = viewModelScope.launch {
+        //authRepository.checkTokenValidity()
         _isLoading.value = true
         _aiAnswer.value = repository.askAI(question)
         _isLoading.value = false

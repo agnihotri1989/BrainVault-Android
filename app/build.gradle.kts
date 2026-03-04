@@ -91,7 +91,11 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     // Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
+    //work manager
     implementation(libs.androidx.work.runtime)
+    //crypto-security
+    implementation(libs.androidx.security.crypto)
+    implementation(libs.androidx.compose.material.icons.extended)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

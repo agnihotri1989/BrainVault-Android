@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,17 +31,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.kshitiz.brainvault.auth.AuthViewModel
 import com.kshitiz.brainvault.data.Note
 import com.kshitiz.brainvault.ui.Screen
 import com.kshitiz.brainvault.viewmodel.NoteViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteListScreen(navController: NavController, viewModel: NoteViewModel) {
+fun NoteListScreen(navController: NavController, viewModel: NoteViewModel,authViewModel: AuthViewModel) {
     val notes by viewModel.allNotes.collectAsState()
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("🧠 BrainVault") }) },
+        topBar = { TopAppBar(title = { Text("🧠 BrainVault") },
+            actions = {
+                IconButton(onClick = { authViewModel.logout() }) {  // 👈 pass authViewModel here
+                    Icon(Icons.Default.Logout, contentDescription = "Logout")
+                }
+            }) },
         floatingActionButton = {
             Column(horizontalAlignment = Alignment.End) {
                 FloatingActionButton(
